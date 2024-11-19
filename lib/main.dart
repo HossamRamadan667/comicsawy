@@ -22,6 +22,6 @@ class App extends StatelessWidget {
               brightness: Brightness.dark,
             ),
             fontFamily: 'khebrat'),
-        home: Homepage(),
+        home: const Homepage(),
       );
 }

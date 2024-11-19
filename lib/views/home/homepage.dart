@@ -37,7 +37,7 @@ class _Homepage extends State<Homepage> {
       textDirection: TextDirection.ltr,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'كوميكساوي',
             style: TextStyle(fontFamily: 'mikhak'),
           ),
