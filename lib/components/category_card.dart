@@ -1,61 +1,31 @@
 import 'package:comicsawy/components/sound_widget.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:comicsawy/firebase.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:comicsawy/models/sound_model.dart';
 import 'package:flutter/material.dart';
 
-class CategoryCard extends StatefulWidget {
+class CategoryCard extends ConsumerStatefulWidget {
   final String category;
-  final AudioPlayer soundPlayer;
-  const CategoryCard(
-      {super.key, required this.category, required this.soundPlayer});
+  final List<Sound> sounds;
+  const CategoryCard({
+    super.key,
+    required this.sounds,
+    required this.category,
+  });
 
   @override
-  State<CategoryCard> createState() => _CategoryCard();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CategoryCard();
 }
 
-class _CategoryCard extends State<CategoryCard> {
-  List<dynamic> storedSounds = [];
-  List<dynamic> sounds = [];
+class _CategoryCard extends ConsumerState<CategoryCard> {
+  List<Sound> storedSounds = [];
+  List<Sound> sounds = [];
   bool shown = false;
 
-  void toggle() {
+  void toggle(wid) {
     setState(() {
-      sounds = shown ? [] : storedSounds;
+      sounds = shown ? [] : wid.sounds;
       shown = !shown;
     });
-  }
-
-  Future<List> getData() async {
-    final categoryRef = storage.ref().child("categories/${widget.category}");
-
-    List<Future<Map<String, String>>> data =
-        (await categoryRef.listAll()).items.map((category) async {
-      //remove .mp3
-      String name = category.name.substring(0, category.name.length - 4);
-
-      // get download url from path
-      String uri = await FirebaseStorage.instance
-          .ref()
-          .child(category.fullPath)
-          .getDownloadURL();
-
-      return {'name': name, 'uri': uri};
-    }).toList();
-
-    return Future.wait([...data]);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getData().then((sounds) => storedSounds = sounds);
-  }
-
-  Function? playSound(uri) {
-    widget.soundPlayer.setUrl(uri);
-    widget.soundPlayer.play();
-    return null;
   }
 
   @override
@@ -77,27 +47,17 @@ class _CategoryCard extends State<CategoryCard> {
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         IconButton(
-                            onPressed: toggle,
+                            onPressed: () => toggle(widget),
                             icon: Icon(shown
                                 ? Icons.arrow_right_rounded
                                 : Icons.arrow_drop_down_rounded))
                       ],
                     ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          border:
-                              Border(top: BorderSide(color: Colors.white30))),
-                      margin: const EdgeInsets.only(top: 10),
-                      child: Column(
-                        children: sounds
-                            .map((sound) => SoundWidget(
-                                  name: sound['name'],
-                                  onPlay: () {
-                                    playSound(sound["uri"]);
-                                  },
-                                ))
-                            .toList(),
-                      ),
+                    shown ? const Divider() : const SizedBox(),
+                    Column(
+                      children: sounds
+                          .map((sound) => SoundWidget(sound: sound))
+                          .toList(),
                     )
                   ],
                 ),
