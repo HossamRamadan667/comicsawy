@@ -46,3 +46,4 @@ app.*.map.json
 
 # web just for dev
 web
+lib/data/secured_data.dart
