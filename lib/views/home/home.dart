@@ -3,6 +3,9 @@ import 'package:comicsawy/providers/navigation_bar_provider.dart';
 import 'package:comicsawy/views/home/pages/favorites_page.dart';
 import 'package:comicsawy/views/home/pages/homepage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:comicsawy/views/add_sound.dart';
+import 'package:comicsawy/views/login.dart';
+import 'package:comicsawy/firebase.dart';
 import 'package:flutter/material.dart';
 
 class Home extends ConsumerStatefulWidget {
@@ -38,7 +41,22 @@ class _HomeState extends ConsumerState<Home> {
           'كوميكساوي',
           style: TextStyle(fontFamily: 'mikhak'),
         ),
-        centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) {
+                      return auth.currentUser == null
+                          ? const Login()
+                          : const AddSound();
+                    },
+                  ),
+                );
+              },
+              icon: const Icon(Icons.add))
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => ref.read(soundControllerProvider.notifier).stopSound(),
