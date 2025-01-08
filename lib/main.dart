@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:comicsawy/themes/dark_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:comicsawy/firebase_options.dart';
 import 'package:comicsawy/views/home/home.dart';
@@ -16,14 +17,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 9, 0, 131),
-              primary: const Color(0xff3638a3),
-              brightness: Brightness.dark,
-            ),
-            fontFamily: 'khebrat'),
+        themeMode: ThemeMode.dark,
+        darkTheme: darkTheme,
         home: const Home(),
       );
 }
