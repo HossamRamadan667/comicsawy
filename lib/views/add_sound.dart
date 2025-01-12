@@ -1,4 +1,3 @@
-import 'package:comicsawy/providers/categories_provider.dart';
 import 'package:comicsawy/providers/add_sound_provider.dart';
 import 'package:comicsawy/providers/sounds_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +10,7 @@ class AddSound extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<Sound> sounds = ref.watch(soundsProvider);
-    List<String> categories = ref.watch(categoriesProvider);
+    List<String> categories = ref.watch(soundsProvider.notifier).categories;
     GlobalKey<FormState> formKey = ref.watch(addSoundProvider);
     AddSoundNotifier formController = ref.watch(addSoundProvider.notifier);
 

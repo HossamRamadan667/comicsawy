@@ -4,8 +4,12 @@ import 'package:comicsawy/data/sounds_data.dart';
 
 class SoundsNotifier extends StateNotifier<List<Sound>> {
   SoundsNotifier() : super([]) {
-    getSoundsData().then((value) => state = value);
+    getSoundsData().then((value) {
+      state = value;
+      categories = value.map((e) => e.category).toSet().toList()..sort();
+    });
   }
+  List<String> categories = [];
 }
 
 final soundsProvider = StateNotifierProvider<SoundsNotifier, List<Sound>>(

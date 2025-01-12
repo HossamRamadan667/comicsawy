@@ -1,4 +1,3 @@
-import 'package:comicsawy/providers/categories_provider.dart';
 import 'package:comicsawy/providers/sounds_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:comicsawy/models/sound_model.dart';
@@ -10,12 +9,12 @@ class Homepage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List categories = ref.watch(categoriesProvider);
+    List categories = ref.watch(soundsProvider.notifier).categories;
     List<Sound> allSounds = ref.watch(soundsProvider);
 
     return Directionality(
         textDirection: TextDirection.ltr,
-        child: ref.watch(categoriesProvider).isEmpty
+        child: categories.isEmpty
             ? const Center(
                 child: CircularProgressIndicator(),
               )
