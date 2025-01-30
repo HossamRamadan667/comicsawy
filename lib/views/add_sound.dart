@@ -4,16 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import '../models/sound_model.dart';
 
-class AddSound extends ConsumerWidget {
+class AddSound extends ConsumerStatefulWidget {
   const AddSound({super.key});
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AddSound> createState() => _AddSoundState();
+}
+
+class _AddSoundState extends ConsumerState<AddSound> {
+  @override
+  Widget build(BuildContext context) {
     List<Sound> sounds = ref.watch(soundsProvider);
     List<String> categories = ref.watch(soundsProvider.notifier).categories;
     GlobalKey<FormState> formKey = ref.watch(addSoundProvider);
     AddSoundNotifier formController = ref.watch(addSoundProvider.notifier);
-
+    formController.setState = setState;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Sound'),
@@ -37,21 +41,29 @@ class AddSound extends ConsumerWidget {
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: DropdownButtonFormField(
-                        validator: (value) =>
-                            value == null ? 'select category first' : null,
-                        value: formController.category,
-                        decoration:
-                            const InputDecoration(labelText: 'Category'),
-                        items: categories
-                            .map((e) => DropdownMenuItem(
-                                  value: e,
-                                  child: Text(e),
-                                ))
-                            .toList(),
-                        onChanged: (val) {
-                          formController.category = val!;
-                        }),
+                    child: formController.isNewCategory
+                        ? TextFormField(
+                            decoration:
+                                const InputDecoration(label: Text('Category')),
+                            onSaved: (newValue) =>
+                                formController.category = newValue,
+                            validator: formController.categoryValidator,
+                          )
+                        : DropdownButtonFormField(
+                            validator: (value) =>
+                                value == null ? 'select category first' : null,
+                            value: formController.category,
+                            decoration:
+                                const InputDecoration(labelText: 'Category'),
+                            items: categories
+                                .map((e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    ))
+                                .toList(),
+                            onChanged: (val) {
+                              formController.category = val!;
+                            }),
                   )
                 ],
               ),
@@ -59,17 +71,36 @@ class AddSound extends ConsumerWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TextButton(
-                        onPressed: formController.picFile,
-                        child: const Text('Select')),
-                    ElevatedButton(
-                        onPressed: () => formController.submit(context),
-                        child: const Text('Upload'))
+                    Row(
+                      children: [
+                        OutlinedButton(
+                            onPressed: formController.picFile,
+                            child: const Text('Select')),
+                        SizedBox(width: 10),
+                        Text(formController.fileName)
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text('New Category'),
+                        Checkbox(
+                          value: formController.isNewCategory,
+                          onChanged: (value) {
+                            formController.toggleIsNewCategory();
+                          },
+                          activeColor: Theme.of(context).primaryColor,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
+              ElevatedButton(
+                  onPressed: () => formController.submit(context),
+                  child: const Text('Upload'))
             ],
           ),
         ),

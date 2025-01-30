@@ -12,10 +12,19 @@ class AddSoundNotifier extends StateNotifier<GlobalKey<FormState>> {
   AddSoundNotifier() : super(GlobalKey<FormState>());
 
   String title = '';
+  String fileName = 'no file selected';
   String? category;
   late String _uri = '';
   File? _soundFile;
   late Reference _fileRef;
+  bool isNewCategory = false;
+  var setState;
+
+  toggleIsNewCategory() {
+    isNewCategory = !isNewCategory;
+    category = null;
+    setState(() {});
+  }
 
   _showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -31,7 +40,16 @@ class AddSoundNotifier extends StateNotifier<GlobalKey<FormState>> {
 
     if (pickedFile != null) {
       _soundFile = File(pickedFile.files.single.path!);
+      fileName = pickedFile.files.single.name;
+      setState(() {}); 
     }
+  }
+
+  String? categoryValidator(value) {
+    if (value!.trim().isEmpty) {
+      return 'cant be empty';
+    }
+    return null;
   }
 
   String? validator(value, sounds) {
@@ -67,9 +85,14 @@ class AddSoundNotifier extends StateNotifier<GlobalKey<FormState>> {
 
   Future<http.Response> _postSound() async {
     Uri url = Uri.https(dbUrl, 'sounds.json');
-    http.Response response = await http.post(url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({"category": category, "name": title, "uri": _uri}));
+    http.Response response = await http
+        .post(url,
+            headers: {'Content-Type': 'application/json'},
+            body:
+                json.encode({"category": category, "name": title, "uri": _uri}))
+        .onError((error, stackTrace) {
+      throw Exception(error.toString());
+    });
     return response;
   }
 
@@ -84,7 +107,11 @@ class AddSoundNotifier extends StateNotifier<GlobalKey<FormState>> {
             Navigator.pop(context);
           } else {
             _fileRef.delete();
+            _showSnackbar(
+                context, json.decode(response.body)['error']['message']);
           }
+        }).onError((error, stackTrace) {
+          _showSnackbar(context, error.toString());
         });
       }).onError((error, stackTrace) {
         _showSnackbar(context, error.toString());
