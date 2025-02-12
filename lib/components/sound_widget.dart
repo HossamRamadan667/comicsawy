@@ -1,30 +1,35 @@
-import 'package:comicsawy/providers/sounds_controller_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/favorites_provider.dart';
+import 'package:comicsawy/controllers/favorites_controller.dart';
+import '../controllers/sound_controller_controller.dart';
 import 'package:comicsawy/models/sound_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class SoundWidget extends ConsumerWidget {
+class SoundWidget extends StatelessWidget {
   final Sound sound;
-  const SoundWidget({super.key, required this.sound});
+  SoundWidget({super.key, required this.sound});
+  final SoundControllerController controller = Get.find();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    List<Sound> favorites = ref.watch(favoritesProvider);
+  Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-              onPressed: () {
-                ref.read(favoritesProvider.notifier).toggleFavorite(sound);
-              },
-              icon: Icon(
-                favorites.contains(sound) ? Icons.star : Icons.star_border,
-                color:
-                    favorites.contains(sound) ? Colors.orange : Colors.white30,
-              )),
+          GetBuilder<FavoritesController>(builder: (favoritesController) {
+            return IconButton(
+                onPressed: () {
+                  favoritesController.toggleFavorite(sound);
+                },
+                icon: Icon(
+                  favoritesController.favorites.contains(sound.id)
+                      ? Icons.star
+                      : Icons.star_border,
+                  color: favoritesController.favorites.contains(sound.id)
+                      ? Colors.orange
+                      : Colors.white30,
+                ));
+          }),
           Expanded(
             child: Text(
               sound.name,
@@ -32,9 +37,7 @@ class SoundWidget extends ConsumerWidget {
             ),
           ),
           IconButton(
-              onPressed: () => ref
-                  .read(soundControllerProvider.notifier)
-                  .playSound(sound.url),
+              onPressed: () => controller.playSound(sound.url),
               icon: const Icon(
                 Icons.play_circle_outlined,
                 size: 35,

@@ -1,9 +1,8 @@
 import 'package:comicsawy/components/sound_widget.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:comicsawy/models/sound_model.dart';
 import 'package:flutter/material.dart';
 
-class CategoryCard extends ConsumerStatefulWidget {
+class CategoryCard extends StatefulWidget {
   final String category;
   final List<Sound> sounds;
   const CategoryCard({
@@ -13,17 +12,14 @@ class CategoryCard extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CategoryCard();
+  State<StatefulWidget> createState() => _CategoryCard();
 }
 
-class _CategoryCard extends ConsumerState<CategoryCard> {
-  List<Sound> storedSounds = [];
-  List<Sound> sounds = [];
+class _CategoryCard extends State<CategoryCard> {
   bool shown = false;
 
-  void toggle(wid) {
+  void toggle() {
     setState(() {
-      sounds = shown ? [] : wid.sounds;
       shown = !shown;
     });
   }
@@ -47,17 +43,21 @@ class _CategoryCard extends ConsumerState<CategoryCard> {
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         IconButton(
-                            onPressed: () => toggle(widget),
+                            onPressed: () => toggle(),
                             icon: Icon(shown
                                 ? Icons.arrow_right_rounded
                                 : Icons.arrow_drop_down_rounded))
                       ],
                     ),
-                    shown ? const Divider() : const SizedBox(),
                     Column(
-                      children: sounds
-                          .map((sound) => SoundWidget(sound: sound))
-                          .toList(),
+                      children: shown
+                          ? [
+                              const Divider(),
+                              ...widget.sounds
+                                  .map((sound) => SoundWidget(sound: sound))
+                                  .toList()
+                            ]
+                          : [],
                     )
                   ],
                 ),
