@@ -1,15 +1,15 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:comicsawy/data/secured_data.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:comicsawy/firebase.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'dart:convert';
 import 'dart:io';
 
-class AddSoundNotifier extends StateNotifier<GlobalKey<FormState>> {
-  AddSoundNotifier() : super(GlobalKey<FormState>());
+class AddSoundController extends GetxController {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String title = '';
   String fileName = 'no file selected';
@@ -18,15 +18,14 @@ class AddSoundNotifier extends StateNotifier<GlobalKey<FormState>> {
   File? _soundFile;
   late Reference _fileRef;
   bool isNewCategory = false;
-  var setState;
 
   toggleIsNewCategory() {
     isNewCategory = !isNewCategory;
     category = null;
-    setState(() {});
+    update();
   }
 
-  _showSnackbar(BuildContext context, String message) {
+  _showSnackbar(String message, BuildContext context) {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
@@ -41,7 +40,7 @@ class AddSoundNotifier extends StateNotifier<GlobalKey<FormState>> {
     if (pickedFile != null) {
       _soundFile = File(pickedFile.files.single.path!);
       fileName = pickedFile.files.single.name;
-      setState(() {}); 
+      update();
     }
   }
 
@@ -97,8 +96,8 @@ class AddSoundNotifier extends StateNotifier<GlobalKey<FormState>> {
   }
 
   submit(BuildContext context) {
-    if (state.currentState!.validate()) {
-      state.currentState!.save();
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
 
       _uploadFile().then((uri) {
         _uri = uri;
@@ -108,19 +107,14 @@ class AddSoundNotifier extends StateNotifier<GlobalKey<FormState>> {
           } else {
             _fileRef.delete();
             _showSnackbar(
-                context, json.decode(response.body)['error']['message']);
+                json.decode(response.body)['error']['message'], context);
           }
         }).onError((error, stackTrace) {
-          _showSnackbar(context, error.toString());
+          _showSnackbar(error.toString(), context);
         });
       }).onError((error, stackTrace) {
-        _showSnackbar(context, error.toString());
+        _showSnackbar(error.toString(), context);
       });
     }
   }
 }
-
-StateNotifierProvider<AddSoundNotifier, GlobalKey<FormState>> addSoundProvider =
-    StateNotifierProvider<AddSoundNotifier, GlobalKey<FormState>>(
-  (ref) => AddSoundNotifier(),
-);

@@ -1,12 +1,11 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:comicsawy/views/add_sound.dart';
-import 'package:comicsawy/firebase.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../firebase.dart';
 import 'dart:developer';
 
-class LoginNotifier extends StateNotifier<GlobalKey<FormState>> {
-  LoginNotifier() : super(GlobalKey<FormState>());
+class LoginController extends GetxController {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String? emailValidatorMessage;
   String _email = '';
   String _password = '';
@@ -15,14 +14,7 @@ class LoginNotifier extends StateNotifier<GlobalKey<FormState>> {
 
   setPassword(password) => _password = password;
 
-  _nextPage(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => const AddSound(),
-      ),
-    );
-  }
+  _nextPage() => Get.toNamed('/addSound');
 
   _validateEmail() {
     RegExp regExp = RegExp(
@@ -34,21 +26,20 @@ class LoginNotifier extends StateNotifier<GlobalKey<FormState>> {
             ? 'email is not valid'
             : emailValidatorMessage;
 
-    return state.currentState!.validate();
+    return formKey.currentState!.validate();
   }
 
   submitForm(BuildContext context) async {
     emailValidatorMessage = null;
-    state.currentState!.save();
-
+    formKey.currentState!.save();
     if (_validateEmail()) {
       await login();
     }
 
-    if (state.currentState!.validate()) {
-      // ignore: use_build_context_synchronously
-      _nextPage(context);
+    if (formKey.currentState!.validate()) {
+      _nextPage();
     }
+    update();
   }
 
   login() async {
@@ -61,8 +52,3 @@ class LoginNotifier extends StateNotifier<GlobalKey<FormState>> {
     }
   }
 }
-
-StateNotifierProvider<LoginNotifier, GlobalKey<FormState>> loginProvider =
-    StateNotifierProvider<LoginNotifier, GlobalKey<FormState>>(
-  (ref) => LoginNotifier(),
-);
