@@ -1,11 +1,11 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:comicsawy/models/sound_model.dart';
+import 'package:comicsawy/data/secured_data.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 Future<List<Sound>> getSoundsData() async {
   List<Sound> sounds = [];
-  Uri url =
-      Uri.https('comicsawy-8b155-default-rtdb.firebaseio.com', 'sounds.json');
+  Uri url = Uri.https(dbUrl, 'sounds.json');
   http.Response response = await http.get(url);
 
   if (response.statusCode == 200) {
