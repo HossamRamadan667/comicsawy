@@ -20,11 +20,7 @@ class Home extends StatelessWidget {
                 'كوميكساوي',
                 style: TextStyle(fontFamily: 'mikhak'),
               ),
-              actions: [
-                IconButton(
-                    onPressed: homeController.goToAppManager,
-                    icon: const Icon(Icons.add))
-              ],
+              centerTitle: true,
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: soundController.stopSound,
