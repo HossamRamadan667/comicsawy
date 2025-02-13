@@ -1,4 +1,3 @@
-import 'package:comicsawy/middleware/add_sound_middleware.dart';
 import 'package:comicsawy/bindings/initial_binding.dart';
 import 'package:comicsawy/themes/dark_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
