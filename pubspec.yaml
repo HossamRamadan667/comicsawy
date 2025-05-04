@@ -42,12 +42,19 @@ dev_dependencies:
     flutter_test:
         sdk: flutter
     flutter_lints: ^2.0.0
+
     # retrofit generator is an dio client generator using source_gen and inspired by Chopper and Retrofit
     retrofit_generator: ^6.0.0+3
+
     # A build system for Dart code generation and modular compilation
     build_runner: ^2.3.3
+
     # Automatically generate code for converting to and from JSON by annotating Dart classes.
     json_serializable: ^6.6.1
+
+    #To customize Flutter's splash screen with background color and splash image
+    # useful terminal command: flutter pub run flutter_native_splash:create
+    flutter_native_splash: ^2.2.18
 
 flutter:
     # The following line ensures that the Material Icons font is
