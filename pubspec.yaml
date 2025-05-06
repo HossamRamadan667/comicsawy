@@ -38,6 +38,9 @@ dependencies:
     # to pic files from phone storage
     file_picker: ^5.3.1
 
+    # A flutter plugin for adapting screen and font size (Responsive)
+    flutter_screenutil: ^5.7.0
+
 dev_dependencies:
     flutter_test:
         sdk: flutter
