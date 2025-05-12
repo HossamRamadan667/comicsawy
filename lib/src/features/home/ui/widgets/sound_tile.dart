@@ -1,5 +1,9 @@
-import 'package:comicsawy/src/features/home/data/sound_model.dart';
+import 'package:comicsawy/src/core/theming/app_colors.dart';
+import 'package:comicsawy/src/core/theming/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../data/models/sound_model.dart';
 
 class SoundTile extends StatefulWidget {
   final SoundModel sound;
@@ -24,14 +28,23 @@ class _SoundTileState extends State<SoundTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: EdgeInsets.zero,
       leading: GestureDetector(
         onTap: _addAndRemoveFromFavorites,
-        child: Icon(isInFavorite ? Icons.star : Icons.star_border),
+        child: Icon(
+          isInFavorite ? Icons.star_rounded : Icons.star_border_rounded,
+          color: isInFavorite ? AppColors.gold : AppColors.gray,
+          size: 30.sp,
+        ),
       ),
-      title: Text(widget.sound.name),
+      title: Text(
+        widget.sound.name,
+        style: TextStyles.font17LightGrayW400,
+      ),
       trailing: IconButton(
         onPressed: _playSound,
-        icon: const Icon(Icons.play_circle_outline, size: 32),
+        icon: Icon(Icons.play_circle_outline, size: 36.sp),
+        color: AppColors.gray,
       ),
     );
   }
