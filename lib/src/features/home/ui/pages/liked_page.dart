@@ -1,9 +1,12 @@
-import 'package:comicsawy/src/features/home/data/sound_model.dart';
-import 'package:comicsawy/src/features/home/widgets/sound_by_category_drop_down.dart';
+import 'package:comicsawy/src/core/widgets/app_card.dart';
+import 'package:comicsawy/src/features/home/data/models/sound_model.dart';
+import 'package:comicsawy/src/features/home/ui/widgets/sound_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Home extends StatelessWidget {
-  List<Map<String, dynamic>> x = [
+class LikedPage extends StatelessWidget {
+  LikedPage({super.key});
+  List<Map<String, dynamic>> dummyData = [
     {
       "category": "ميكس",
       "name": "انت يا جحش",
@@ -18,23 +21,18 @@ class Home extends StatelessWidget {
     },
   ];
 
-  List<SoundModel> s() {
-    return x.map((e) => SoundModel.fromJson(e)).toList();
+  List<SoundModel> dummySounds() {
+    return dummyData.map((e) => SoundModel.fromJson(e)).toList();
   }
-
-  Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SoundByCategoryDropDown(
-                soundsByCategory: s(), category: ' category'),
-          ],
-        ),
-      ),
+    return ListView.builder(
+      padding: EdgeInsets.only(top: 10.h),
+      itemCount: 44,
+      itemBuilder: (context, index) => Container(
+          margin: EdgeInsets.only(bottom: index + 1 >= 44 ? 80.h : 0),
+          child: AppCard(child: SoundTile(sound: dummySounds()[1]))),
     );
   }
 }
