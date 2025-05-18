@@ -46,8 +46,12 @@ dependencies:
     freezed_annotation: ^2.4.1
 
     # State management
-    # https://pub.dev/packages/bloc
-    bloc: ^9.0.0
+    # https://pub.dev/packages/flutter_bloc
+    flutter_bloc: ^9.1.1
+
+    # dependency injection
+    # https://pub.dev/packages/get_it
+    get_it: ^7.6.0
 
 dev_dependencies:
     flutter_test:
