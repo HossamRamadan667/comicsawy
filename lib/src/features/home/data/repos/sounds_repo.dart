@@ -7,13 +7,13 @@ import '../models/sound_model.dart';
 class SoundsRepo {
   final ApiServices apiServices;
   final SharedPreferences sharedPreferences;
-  SoundsRepo(this.sharedPreferences, {required this.apiServices});
+  SoundsRepo({required this.apiServices, required this.sharedPreferences});
 
   Future<ApiResult<Map<String, List<SoundModel>>>> getAllSound() async {
     try {
       Map<String, List<SoundModel>> sounds = {};
 
-      addToMapByCategory( SoundModel sound ) {
+      addToMapByCategory(SoundModel sound) {
         if (sounds[sound.category] != null) {
           sounds[sound.category]!.add(sound);
         } else {
@@ -21,7 +21,7 @@ class SoundsRepo {
           sounds[sound.category]!.add(sound);
         }
       }
-      
+
       List<String>? likedIdsList = sharedPreferences.getStringList('liked');
 
       Map<String, SoundModel> response = await apiServices.getAllSound();
@@ -35,7 +35,7 @@ class SoundsRepo {
           sound.setIsLiked(true);
         }
 
-        addToMapByCategory(  sound);
+        addToMapByCategory(sound);
       });
 
       return ApiResult.success(sounds);
