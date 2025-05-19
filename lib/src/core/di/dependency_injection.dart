@@ -4,19 +4,27 @@ import 'package:comicsawy/src/features/home/data/repos/sounds_repo.dart';
 import 'package:comicsawy/src/features/home/logic/cubit/sounds_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setupGetIt() async {
+  // simple local storage
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
-  final Dio dio = DioFactory.getDio();
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
+  // sound controller
+  final AudioPlayer audioPlayer = AudioPlayer();
+  getIt.registerLazySingleton<AudioPlayer>(() => audioPlayer);
+
+  // networking
+  final Dio dio = DioFactory.getDio();
   getIt.registerLazySingleton<ApiServices>(() => ApiServices(dio));
 
   //home
-  getIt.registerLazySingleton<SoundsRepo>(() =>
-      SoundsRepo(apiServices: getIt(), sharedPreferences: sharedPreferences));
+  getIt.registerLazySingleton<SoundsRepo>(
+      () => SoundsRepo(apiServices: getIt(), sharedPreferences: getIt()));
   getIt.registerLazySingleton<SoundsCubit>(() => SoundsCubit(getIt()));
 }
