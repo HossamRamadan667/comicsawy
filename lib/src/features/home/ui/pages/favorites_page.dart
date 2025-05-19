@@ -4,8 +4,8 @@ import 'package:comicsawy/src/features/home/ui/widgets/sound_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LikedPage extends StatelessWidget {
-  LikedPage({super.key});
+class FavoritesPage extends StatelessWidget {
+  FavoritesPage({super.key});
   List<Map<String, dynamic>> dummyData = [
     {
       "category": "ميكس",

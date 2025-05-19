@@ -2,7 +2,7 @@ import 'package:comicsawy/src/core/constants/app_constants.dart';
 import 'package:comicsawy/src/core/theming/app_colors.dart';
 import 'package:comicsawy/src/core/theming/text_styles.dart';
 import 'package:comicsawy/src/features/home/ui/pages/home_page.dart';
-import 'package:comicsawy/src/features/home/ui/pages/liked_page.dart';
+import 'package:comicsawy/src/features/home/ui/pages/favorites_page.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> pages = [HomePage(), LikedPage()];
+  List<Widget> pages = [HomePage(), FavoritesPage()];
   int currentPageIndex = 0;
 
   PreferredSizeWidget _buildAppBar(BuildContext context) => AppBar(
@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             const BottomNavigationBarItem(
-              label: 'Liked',
+              label: 'Favorites',
               icon: Icon(
                 Icons.star_border_rounded,
                 color: AppColors.gray,

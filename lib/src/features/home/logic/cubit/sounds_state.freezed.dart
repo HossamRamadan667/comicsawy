@@ -81,23 +81,23 @@ class _$SoundsStateCopyWithImpl<T, $Res, $Val extends SoundsState<T>>
 }
 
 /// @nodoc
-abstract class _$$IdelCopyWith<T, $Res> {
-  factory _$$IdelCopyWith(_$Idel<T> value, $Res Function(_$Idel<T>) then) =
-      __$$IdelCopyWithImpl<T, $Res>;
+abstract class _$$IdleCopyWith<T, $Res> {
+  factory _$$IdleCopyWith(_$Idle<T> value, $Res Function(_$Idle<T>) then) =
+      __$$IdleCopyWithImpl<T, $Res>;
 }
 
 /// @nodoc
-class __$$IdelCopyWithImpl<T, $Res>
-    extends _$SoundsStateCopyWithImpl<T, $Res, _$Idel<T>>
-    implements _$$IdelCopyWith<T, $Res> {
-  __$$IdelCopyWithImpl(_$Idel<T> _value, $Res Function(_$Idel<T>) _then)
+class __$$IdleCopyWithImpl<T, $Res>
+    extends _$SoundsStateCopyWithImpl<T, $Res, _$Idle<T>>
+    implements _$$IdleCopyWith<T, $Res> {
+  __$$IdleCopyWithImpl(_$Idle<T> _value, $Res Function(_$Idle<T>) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$Idel<T> implements Idle<T> {
-  _$Idel();
+class _$Idle<T> implements Idle<T> {
+  _$Idle();
 
   @override
   String toString() {
@@ -107,7 +107,7 @@ class _$Idel<T> implements Idle<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$Idel<T>);
+        (other.runtimeType == runtimeType && other is _$Idle<T>);
   }
 
   @override
@@ -183,7 +183,7 @@ class _$Idel<T> implements Idle<T> {
 }
 
 abstract class Idle<T> implements SoundsState<T> {
-  factory Idle() = _$Idel<T>;
+  factory Idle() = _$Idle<T>;
 }
 
 /// @nodoc

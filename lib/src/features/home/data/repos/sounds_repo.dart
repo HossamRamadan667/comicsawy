@@ -1,3 +1,4 @@
+import 'package:comicsawy/src/core/constants/app_constants.dart';
 import 'package:comicsawy/src/core/networking/api_result.dart';
 import 'package:comicsawy/src/core/networking/api_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,8 @@ class SoundsRepo {
         }
       }
 
-      List<String>? likedIdsList = sharedPreferences.getStringList('liked');
+      List<String>? favoriteIdsList =
+          sharedPreferences.getStringList(AppConstants.favoritesListKey);
 
       Map<String, SoundModel> response = await apiServices.getAllSound();
 
@@ -30,9 +32,9 @@ class SoundsRepo {
         // set is id to the model
         sound.setId(id);
 
-        // set is liked to the model
-        if (likedIdsList != null && likedIdsList.contains(id)) {
-          sound.setIsLiked(true);
+        // set is Favorite to the model
+        if (favoriteIdsList != null && favoriteIdsList.contains(id)) {
+          sound.setIsFavorite(true);
         }
 
         addToMapByCategory(sound);

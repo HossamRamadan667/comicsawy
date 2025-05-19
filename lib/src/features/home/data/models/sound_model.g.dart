@@ -12,12 +12,12 @@ SoundModel _$SoundModelFromJson(Map<String, dynamic> json) => SoundModel(
       uri: json['uri'] as String,
     )
       ..id = json['id'] as String?
-      ..liked = json['liked'] as bool?;
+      ..favorite = json['favorite'] as bool?;
 
 Map<String, dynamic> _$SoundModelToJson(SoundModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'liked': instance.liked,
+      'favorite': instance.favorite,
       'category': instance.category,
       'name': instance.name,
       'uri': instance.uri,
