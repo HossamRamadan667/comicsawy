@@ -26,5 +26,5 @@ Future<void> setupGetIt() async {
   //home
   getIt.registerLazySingleton<SoundsRepo>(
       () => SoundsRepo(apiServices: getIt(), sharedPreferences: getIt()));
-  getIt.registerLazySingleton<SoundsCubit>(() => SoundsCubit(getIt()));
+  getIt.registerLazySingleton<HomePageCubit>(() => HomePageCubit(getIt()));
 }
