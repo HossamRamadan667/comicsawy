@@ -1,38 +1,57 @@
+import 'package:comicsawy/src/core/constants/app_constants.dart';
+import 'package:comicsawy/src/core/di/dependency_injection.dart';
 import 'package:comicsawy/src/core/widgets/app_card.dart';
 import 'package:comicsawy/src/features/home/data/models/sound_model.dart';
+import 'package:comicsawy/src/features/home/logic/cubit/favorite_page_cubit.dart';
+import 'package:comicsawy/src/features/home/logic/cubit/sounds_state.dart';
 import 'package:comicsawy/src/features/home/ui/widgets/sound_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class FavoritesPage extends StatelessWidget {
-  FavoritesPage({super.key});
-  List<Map<String, dynamic>> dummyData = [
-    {
-      "category": "ميكس",
-      "name": "انت يا جحش",
-      "uri":
-          "https://firebasestorage.googleapis.com/v0/b/comicsawy-8b155.appspot.com/o/categories%2F%D9%85%D9%8A%D9%83%D8%B3%2F%D8%A7%D9%86%D8%AA%20%D9%8A%D8%A7%20%D8%AC%D8%AD%D8%B4.mp3?alt=media&token=937df9b2-22d8-41e3-80a8-4aa1708f0d5f"
-    },
-    {
-      "category": "ميكس",
-      "name": "أعوذ بالله",
-      "uri":
-          "https://firebasestorage.googleapis.com/v0/b/comicsawy-8b155.appspot.com/o/categories%2F%D9%85%D9%8A%D9%83%D8%B3%2F%D8%A3%D8%B9%D9%88%D8%B0%20%D8%A8%D8%A7%D9%84%D9%84%D9%87.mp3?alt=media&token=109aae6e-85b0-47c1-a3f1-2faf116f45e6"
-    },
-  ];
+class FavoritesPage extends StatefulWidget {
+  const FavoritesPage({super.key});
 
-  List<SoundModel> dummySounds() {
-    return dummyData.map((e) => SoundModel.fromJson(e)).toList();
+  @override
+  State<FavoritesPage> createState() => _FavoritesPageState();
+}
+
+class _FavoritesPageState extends State<FavoritesPage> {
+  SharedPreferences sharedPreferences = getIt<SharedPreferences>();
+
+  @override
+  void initState() {
+    BlocProvider.of<FavoritesPageCubit>(context).emitFavorites();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<FavoritesPageCubit, SoundsState<List<SoundModel>>>(
+      builder: (context, state) {
+        return state.when(
+          idle: () => const CircularProgressIndicator(),
+          success: (sounds) => _buildSuccessBody(sounds),
+          fail: (errorMessage) => Center(
+            child: Text(errorMessage),
+          ),
+        );
+      },
+    );
+  }
+
+  ListView _buildSuccessBody(List<SoundModel> sounds) {
+    List<String>? favoritesIdsList =
+        sharedPreferences.getStringList(AppConstants.favoritesListKey);
+    favoritesIdsList ??= [];
     return ListView.builder(
       padding: EdgeInsets.only(top: 10.h),
-      itemCount: 44,
+      itemCount: sounds.length,
       itemBuilder: (context, index) => Container(
-          margin: EdgeInsets.only(bottom: index + 1 >= 44 ? 80.h : 0),
-          child: AppCard(child: SoundTile(sound: dummySounds()[1]))),
+          margin:
+              EdgeInsets.only(bottom: index + 1 >= sounds.length ? 80.h : 0),
+          child: AppCard(child: SoundTile(sound: sounds[index]))),
     );
   }
 }
