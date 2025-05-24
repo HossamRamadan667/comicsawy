@@ -10,7 +10,7 @@ class HomePageCubit extends Cubit<SoundsState<Map<String, List<SoundModel>>>> {
 
   void emitSounds() async {
     ApiResult<Map<String, List<SoundModel>>> response =
-        await soundsRepo.getRestructuredSounds();
+        await soundsRepo.getSoundsSortedByCategory();
     response.when(
       success: (sounds) {
         emit(SoundsState.success(sounds));
