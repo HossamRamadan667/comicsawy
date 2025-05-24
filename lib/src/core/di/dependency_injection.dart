@@ -1,8 +1,12 @@
 import 'package:comicsawy/src/core/networking/api_services.dart';
 import 'package:comicsawy/src/core/networking/dio_factory.dart';
 import 'package:comicsawy/src/features/home/data/repos/sounds_repo.dart';
-import 'package:comicsawy/src/features/home/logic/cubit/sounds_cubit.dart';
+import 'package:comicsawy/src/features/home/logic/cubit/favorite_page_cubit.dart';
+import 'package:comicsawy/src/features/home/logic/cubit/home_page_cubit.dart';
+import 'package:comicsawy/src/features/home/ui/pages/favorites_page.dart';
+import 'package:comicsawy/src/features/home/ui/pages/home_page.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,4 +31,6 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<SoundsRepo>(
       () => SoundsRepo(apiServices: getIt(), sharedPreferences: getIt()));
   getIt.registerLazySingleton<HomePageCubit>(() => HomePageCubit(getIt()));
+  getIt.registerLazySingleton<FavoritesPageCubit>(
+      () => FavoritesPageCubit(getIt()));
 }
