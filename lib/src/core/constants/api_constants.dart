@@ -1,4 +1,5 @@
+import 'package:comicsawy/src/core/constants/private_api_constants.dart';
+
 class ApiConstants {
-  static const String baseUrl =
-      'https://comicsawy-8b155-default-rtdb.firebaseio.com/';
+  static const String baseUrl = PrivateApiConstants.baseUrl;
 }
