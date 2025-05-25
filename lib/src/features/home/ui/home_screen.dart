@@ -33,10 +33,14 @@ class _HomeState extends State<Home> {
 
   Widget _buildBody() => widget.pages.elementAt(currentPageIndex);
 
-  Widget _buildFloatingActionButton() => FloatingActionButton(
+  Widget _buildFloatingActionButton() => FloatingActionButton.extended(
       onPressed: () {},
-      child: const Icon(
-        Icons.stop,
+      label: Text(
+        AppConstants.stopButtonTitle,
+        style: TextStyles.font17LightGrayW400,
+      ),
+      icon: const Icon(
+        Icons.back_hand_sharp,
       ));
 
   Widget _buildBottomNavigationBar() => BottomNavigationBar(
@@ -46,7 +50,7 @@ class _HomeState extends State<Home> {
               }),
           items: [
             BottomNavigationBarItem(
-              label: 'Home',
+              label: AppConstants.homePageTitle,
               icon: const Icon(
                 Icons.home_outlined,
               ),
@@ -56,7 +60,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             const BottomNavigationBarItem(
-              label: 'Favorites',
+              label: AppConstants.favoritesPageTitle,
               icon: Icon(
                 Icons.star_border_rounded,
                 color: AppColors.gray,
