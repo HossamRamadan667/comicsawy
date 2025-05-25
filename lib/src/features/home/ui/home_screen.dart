@@ -1,19 +1,24 @@
 import 'package:comicsawy/src/core/constants/app_constants.dart';
+import 'package:comicsawy/src/core/di/dependency_injection.dart';
 import 'package:comicsawy/src/core/theming/app_colors.dart';
 import 'package:comicsawy/src/core/theming/text_styles.dart';
-import 'package:comicsawy/src/features/home/ui/pages/home_page.dart';
-import 'package:comicsawy/src/features/home/ui/pages/liked_page.dart';
+import 'package:comicsawy/src/features/home/logic/cubit/favorite_page_cubit.dart';
+import 'package:comicsawy/src/features/home/logic/cubit/home_page_cubit.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class Home extends StatefulWidget {
-  Home({super.key});
-
+  late List<Widget> pages;
+  final Widget homePage;
+  final Widget favoritesPage;
+  Home({super.key, required this.homePage, required this.favoritesPage}) {
+    pages = [homePage, favoritesPage];
+  }
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> pages = [HomePage(), LikedPage()];
   int currentPageIndex = 0;
 
   PreferredSizeWidget _buildAppBar(BuildContext context) => AppBar(
@@ -26,13 +31,18 @@ class _HomeState extends State<Home> {
         centerTitle: true,
       );
 
-  Widget _buildBody() => pages.elementAt(currentPageIndex);
+  Widget _buildBody() => widget.pages.elementAt(currentPageIndex);
 
-  Widget _buildFloatingActionButton() => FloatingActionButton(
+  Widget _buildFloatingActionButton() => FloatingActionButton.extended(
       onPressed: () {},
-      child: const Icon(
-        Icons.stop,
+      label: Text(
+        AppConstants.stopButtonTitle,
+        style: TextStyles.font17LightGrayW400,
+      ),
+      icon: const Icon(
+        Icons.back_hand_sharp,
       ));
+
   Widget _buildBottomNavigationBar() => BottomNavigationBar(
           currentIndex: currentPageIndex,
           onTap: (value) => setState(() {
@@ -40,7 +50,7 @@ class _HomeState extends State<Home> {
               }),
           items: [
             BottomNavigationBarItem(
-              label: 'Home',
+              label: AppConstants.homePageTitle,
               icon: const Icon(
                 Icons.home_outlined,
               ),
@@ -50,7 +60,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             const BottomNavigationBarItem(
-              label: 'Liked',
+              label: AppConstants.favoritesPageTitle,
               icon: Icon(
                 Icons.star_border_rounded,
                 color: AppColors.gray,
@@ -70,5 +80,12 @@ class _HomeState extends State<Home> {
       floatingActionButton: _buildFloatingActionButton(),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
+  }
+
+  @override
+  void dispose() {
+    getIt<HomePageCubit>().close();
+    getIt<FavoritesPageCubit>().close();
+    super.dispose();
   }
 }

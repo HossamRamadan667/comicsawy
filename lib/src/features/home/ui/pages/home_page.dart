@@ -1,51 +1,63 @@
 import 'package:comicsawy/src/features/home/data/models/sound_model.dart';
+import 'package:comicsawy/src/features/home/logic/cubit/home_page_cubit.dart';
+import 'package:comicsawy/src/features/home/logic/cubit/sounds_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../widgets/sound_by_category_drop_down.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
-  List<Map<String, dynamic>> dummyData = [
-    {
-      "category": "ميكس",
-      "name": "انت يا جحش",
-      "uri":
-          "https://firebasestorage.googleapis.com/v0/b/comicsawy-8b155.appspot.com/o/categories%2F%D9%85%D9%8A%D9%83%D8%B3%2F%D8%A7%D9%86%D8%AA%20%D9%8A%D8%A7%20%D8%AC%D8%AD%D8%B4.mp3?alt=media&token=937df9b2-22d8-41e3-80a8-4aa1708f0d5f"
-    },
-    {
-      "category": "ميكس",
-      "name": "أعوذ بالله",
-      "uri":
-          "https://firebasestorage.googleapis.com/v0/b/comicsawy-8b155.appspot.com/o/categories%2F%D9%85%D9%8A%D9%83%D8%B3%2F%D8%A3%D8%B9%D9%88%D8%B0%20%D8%A8%D8%A7%D9%84%D9%84%D9%87.mp3?alt=media&token=109aae6e-85b0-47c1-a3f1-2faf116f45e6"
-    },
-  ];
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
-  List<SoundModel> dummySounds() {
-    return dummyData.map((e) => SoundModel.fromJson(e)).toList();
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    BlocProvider.of<HomePageCubit>(context).emitSounds();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 17.h),
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              // 30 just to test
-              // it will change to categories.length
-              itemCount: 30,
-              itemBuilder: (context, index) => Container(
-                // 30 just to test
-                // it will change to categories.length
-                child: SoundByCategoryDropDown(
-                    soundsByCategory: dummySounds(), category: 'ميكس'),
+    return BlocBuilder<HomePageCubit,
+        SoundsState<Map<String, List<SoundModel>>>>(
+      builder: (context, state) {
+        return state.when(
+          idle: () {
+            return const Center(child: CircularProgressIndicator());
+          },
+          success: (soundsResponse) {
+            List<String> categories = soundsResponse.keys.toList()..sort();
+            return Container(
+              margin: EdgeInsets.only(top: 17.h),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) => Container(
+                        margin: EdgeInsets.only(
+                            bottom: index + 1 >= categories.length ? 80.h : 0),
+                        child: SoundByCategoryDropDown(
+                            soundsByCategory:
+                                soundsResponse[categories.elementAt(index)]!,
+                            category: categories.elementAt(index)),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-        ],
-      ),
+            );
+          },
+          fail: (errorMessage) {
+            return Center(child: Text(errorMessage));
+          },
+        );
+      },
     );
   }
 }

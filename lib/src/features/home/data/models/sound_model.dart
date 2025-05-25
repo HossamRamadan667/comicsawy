@@ -7,14 +7,14 @@ class SoundModel {
   @JsonKey(required: false)
   String? id;
   @JsonKey(required: false)
-  bool? liked;
+  bool? favorite;
   String category;
   String name;
   String uri;
 
   SoundModel({required this.category, required this.name, required this.uri});
 
-  setIsLiked(bool isLiked) => liked = isLiked;
+  setIsFavorite(bool isFavorite) => favorite = isFavorite;
   setId(String id) => this.id = id;
 
   factory SoundModel.fromJson(Map<String, dynamic> json) =>
