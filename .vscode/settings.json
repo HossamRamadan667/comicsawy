@@ -4,6 +4,7 @@
 		"theming": "theme",
 		"dependency_injection": "connection",
 		"di": "connection",
-		"features": "App"
+		"features": "App",
+		"login": "keys"
 	}
 }
