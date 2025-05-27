@@ -21,4 +21,15 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.lightGray,
   );
+
+  static TextStyle font20Gray = TextStyle(
+    fontSize: 20.sp,
+    color: AppColors.lightGray,
+    fontFamily: 'khebrat',
+  );
+  static TextStyle font17Gray = TextStyle(
+    fontSize: 17.sp,
+    color: AppColors.lightGray,
+    fontFamily: 'khebrat',
+  );
 }
