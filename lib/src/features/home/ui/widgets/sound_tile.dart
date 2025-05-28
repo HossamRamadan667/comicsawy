@@ -4,6 +4,7 @@ import 'package:comicsawy/src/core/theming/app_colors.dart';
 import 'package:comicsawy/src/core/theming/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/models/sound_model.dart';
@@ -18,14 +19,18 @@ class SoundTile extends StatefulWidget {
 
 class _SoundTileState extends State<SoundTile> {
   late bool isInFavorites;
-
+  final AudioPlayer audioPlayer = getIt<AudioPlayer>();
   @override
   void initState() {
     isInFavorites = widget.sound.favorite ?? false;
     super.initState();
   }
 
-  void _playSound() {}
+  void _playSound() async {
+    await audioPlayer.setUrl(widget.sound.uri);
+    audioPlayer.play();
+  }
+
   void _toggleFavorite() {
     SharedPreferences sharedPreferences = getIt<SharedPreferences>();
 
