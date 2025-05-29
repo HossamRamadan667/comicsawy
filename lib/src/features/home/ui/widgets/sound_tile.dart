@@ -7,8 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data/models/sound_model.dart';
-
 class SoundTile extends StatefulWidget {
   final SoundModel sound;
   const SoundTile({super.key, required this.sound});
@@ -19,7 +17,11 @@ class SoundTile extends StatefulWidget {
 
 class _SoundTileState extends State<SoundTile> {
   late bool isInFavorites;
+  late bool isPlaying = false;
+  String currentPlayingSound = '';
+
   final AudioPlayer audioPlayer = getIt<AudioPlayer>();
+
   @override
   void initState() {
     isInFavorites = widget.sound.favorite ?? false;
@@ -27,8 +29,26 @@ class _SoundTileState extends State<SoundTile> {
   }
 
   void _playSound() async {
+    // if current sound playing just stop and reset current playing and then return
+    if (currentPlayingSound == widget.sound.id!) {
+      await audioPlayer.stop();
+      currentPlayingSound = '';
+      return;
+    }
+    // else stop and start again
+    currentPlayingSound = widget.sound.id!;
+    await audioPlayer.stop();
     await audioPlayer.setUrl(widget.sound.uri);
-    audioPlayer.play();
+    setState(() {
+      isPlaying = true;
+    });
+    await audioPlayer.play().then((value) {
+      // when the sound finishes reset current playing value
+      currentPlayingSound = '';
+      setState(() {
+        isPlaying = false;
+      });
+    });
   }
 
   void _toggleFavorite() {
@@ -76,7 +96,11 @@ class _SoundTileState extends State<SoundTile> {
       ),
       trailing: IconButton(
         onPressed: _playSound,
-        icon: Icon(Icons.play_circle_outline, size: 36.sp),
+        icon: Icon(
+            isPlaying
+                ? Icons.pause_circle_outline_outlined
+                : Icons.play_circle_outline,
+            size: 36.sp),
         color: AppColors.gray,
       ),
     );
