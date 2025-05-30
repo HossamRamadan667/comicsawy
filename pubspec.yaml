@@ -77,6 +77,10 @@ dev_dependencies:
     # https://pub.dev/packages/freezed
     freezed: ^2.3.3
 
+    # A package for updating app's launcher icon.
+    # https://pub.dev/packages/flutter_launcher_icons/versions/0.12.0
+    flutter_launcher_icons: ^0.12.0
+
 flutter:
     # The following line ensures that the Material Icons font is
     # included with your application, so that you can use the icons in
@@ -92,6 +96,8 @@ flutter:
           fonts:
               - asset: assets/fonts/read/Khebrat-Musamim-Regular.ttf
 
-    #
-    # For details regarding fonts from package dependencies,
-    # see https://flutter.dev/custom-fonts/#from-packages
+# Setup flutter_launcher_icons
+flutter_icons:
+    android: "launcher_icon"
+    image_path: "assets/images/luncher_icon.png"
+    min_sdk_android: 16
