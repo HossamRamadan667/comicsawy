@@ -5,6 +5,7 @@ import 'package:comicsawy/src/core/theming/text_styles.dart';
 import 'package:comicsawy/src/features/home/logic/cubit/favorite_page_cubit.dart';
 import 'package:comicsawy/src/features/home/logic/cubit/home_page_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
 // ignore: must_be_immutable
 class Home extends StatefulWidget {
@@ -20,6 +21,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentPageIndex = 0;
+  void _stopSound() {
+    AudioPlayer audioPlayer = getIt<AudioPlayer>();
+    audioPlayer.stop();
+  }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) => AppBar(
         titleTextStyle: TextStyles.font24GrayW700,
@@ -34,7 +39,7 @@ class _HomeState extends State<Home> {
   Widget _buildBody() => widget.pages.elementAt(currentPageIndex);
 
   Widget _buildFloatingActionButton() => FloatingActionButton.extended(
-      onPressed: () {},
+      onPressed: _stopSound,
       label: Text(
         AppConstants.stopButtonTitle,
         style: TextStyles.font17LightGrayW400,
@@ -86,6 +91,7 @@ class _HomeState extends State<Home> {
   void dispose() {
     getIt<HomePageCubit>().close();
     getIt<FavoritesPageCubit>().close();
+    getIt<AudioPlayer>().dispose();
     super.dispose();
   }
 }
