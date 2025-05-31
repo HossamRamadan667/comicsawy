@@ -1,5 +1,6 @@
 import 'package:comicsawy/src/core/constants/app_constants.dart';
 import 'package:comicsawy/src/core/di/dependency_injection.dart';
+import 'package:comicsawy/src/core/routing/routes.dart';
 import 'package:comicsawy/src/core/theming/app_colors.dart';
 import 'package:comicsawy/src/core/theming/text_styles.dart';
 import 'package:comicsawy/src/features/home/logic/cubit/favorite_page_cubit.dart';
@@ -34,6 +35,14 @@ class _HomeState extends State<Home> {
           style: TextStyles.font24GrayW700,
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.uploadSound);
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
       );
 
   Widget _buildBody() => widget.pages.elementAt(currentPageIndex);
