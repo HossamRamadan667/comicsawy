@@ -27,7 +27,7 @@ class AppRouter {
         );
       case AppRoutes.uploadSound:
         return MaterialPageRoute(
-          builder: (context) => UploadSoundScreen(),
+          builder: (context) => const UploadSoundScreen(),
         );
       default:
         return MaterialPageRoute(
