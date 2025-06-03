@@ -20,21 +20,21 @@ mixin _$SoundsState<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
     required TResult Function(T sounds) success,
-    required TResult Function(String errorMessage) fail,
+    required TResult Function(ErrorHandler errorHandler) fail,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? idle,
     TResult? Function(T sounds)? success,
-    TResult? Function(String errorMessage)? fail,
+    TResult? Function(ErrorHandler errorHandler)? fail,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? idle,
     TResult Function(T sounds)? success,
-    TResult Function(String errorMessage)? fail,
+    TResult Function(ErrorHandler errorHandler)? fail,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -118,7 +118,7 @@ class _$Idle<T> implements Idle<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
     required TResult Function(T sounds) success,
-    required TResult Function(String errorMessage) fail,
+    required TResult Function(ErrorHandler errorHandler) fail,
   }) {
     return idle();
   }
@@ -128,7 +128,7 @@ class _$Idle<T> implements Idle<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? idle,
     TResult? Function(T sounds)? success,
-    TResult? Function(String errorMessage)? fail,
+    TResult? Function(ErrorHandler errorHandler)? fail,
   }) {
     return idle?.call();
   }
@@ -138,7 +138,7 @@ class _$Idle<T> implements Idle<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? idle,
     TResult Function(T sounds)? success,
-    TResult Function(String errorMessage)? fail,
+    TResult Function(ErrorHandler errorHandler)? fail,
     required TResult orElse(),
   }) {
     if (idle != null) {
@@ -253,7 +253,7 @@ class _$Success<T> implements Success<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
     required TResult Function(T sounds) success,
-    required TResult Function(String errorMessage) fail,
+    required TResult Function(ErrorHandler errorHandler) fail,
   }) {
     return success(sounds);
   }
@@ -263,7 +263,7 @@ class _$Success<T> implements Success<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? idle,
     TResult? Function(T sounds)? success,
-    TResult? Function(String errorMessage)? fail,
+    TResult? Function(ErrorHandler errorHandler)? fail,
   }) {
     return success?.call(sounds);
   }
@@ -273,7 +273,7 @@ class _$Success<T> implements Success<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? idle,
     TResult Function(T sounds)? success,
-    TResult Function(String errorMessage)? fail,
+    TResult Function(ErrorHandler errorHandler)? fail,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -331,7 +331,7 @@ abstract class _$$FailCopyWith<T, $Res> {
   factory _$$FailCopyWith(_$Fail<T> value, $Res Function(_$Fail<T>) then) =
       __$$FailCopyWithImpl<T, $Res>;
   @useResult
-  $Res call({String errorMessage});
+  $Res call({ErrorHandler errorHandler});
 }
 
 /// @nodoc
@@ -344,13 +344,13 @@ class __$$FailCopyWithImpl<T, $Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? errorMessage = null,
+    Object? errorHandler = null,
   }) {
     return _then(_$Fail<T>(
-      null == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String,
+      null == errorHandler
+          ? _value.errorHandler
+          : errorHandler // ignore: cast_nullable_to_non_nullable
+              as ErrorHandler,
     ));
   }
 }
@@ -358,14 +358,14 @@ class __$$FailCopyWithImpl<T, $Res>
 /// @nodoc
 
 class _$Fail<T> implements Fail<T> {
-  _$Fail(this.errorMessage);
+  _$Fail(this.errorHandler);
 
   @override
-  final String errorMessage;
+  final ErrorHandler errorHandler;
 
   @override
   String toString() {
-    return 'SoundsState<$T>.fail(errorMessage: $errorMessage)';
+    return 'SoundsState<$T>.fail(errorHandler: $errorHandler)';
   }
 
   @override
@@ -373,12 +373,12 @@ class _$Fail<T> implements Fail<T> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$Fail<T> &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+            (identical(other.errorHandler, errorHandler) ||
+                other.errorHandler == errorHandler));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, errorMessage);
+  int get hashCode => Object.hash(runtimeType, errorHandler);
 
   @JsonKey(ignore: true)
   @override
@@ -391,9 +391,9 @@ class _$Fail<T> implements Fail<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
     required TResult Function(T sounds) success,
-    required TResult Function(String errorMessage) fail,
+    required TResult Function(ErrorHandler errorHandler) fail,
   }) {
-    return fail(errorMessage);
+    return fail(errorHandler);
   }
 
   @override
@@ -401,9 +401,9 @@ class _$Fail<T> implements Fail<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? idle,
     TResult? Function(T sounds)? success,
-    TResult? Function(String errorMessage)? fail,
+    TResult? Function(ErrorHandler errorHandler)? fail,
   }) {
-    return fail?.call(errorMessage);
+    return fail?.call(errorHandler);
   }
 
   @override
@@ -411,11 +411,11 @@ class _$Fail<T> implements Fail<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? idle,
     TResult Function(T sounds)? success,
-    TResult Function(String errorMessage)? fail,
+    TResult Function(ErrorHandler errorHandler)? fail,
     required TResult orElse(),
   }) {
     if (fail != null) {
-      return fail(errorMessage);
+      return fail(errorHandler);
     }
     return orElse();
   }
@@ -456,9 +456,9 @@ class _$Fail<T> implements Fail<T> {
 }
 
 abstract class Fail<T> implements SoundsState<T> {
-  factory Fail(final String errorMessage) = _$Fail<T>;
+  factory Fail(final ErrorHandler errorHandler) = _$Fail<T>;
 
-  String get errorMessage;
+  ErrorHandler get errorHandler;
   @JsonKey(ignore: true)
   _$$FailCopyWith<T, _$Fail<T>> get copyWith =>
       throw _privateConstructorUsedError;

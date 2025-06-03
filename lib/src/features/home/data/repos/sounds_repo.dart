@@ -1,3 +1,4 @@
+import 'package:comicsawy/src/core/networking/error_handler.dart';
 import 'package:comicsawy/src/features/home/data/models/sound_model.dart';
 import 'package:comicsawy/src/core/di/dependency_injection.dart';
 import 'package:comicsawy/src/core/constants/app_constants.dart';
@@ -120,8 +121,8 @@ class SoundsRepo {
       }
 
       return ApiResult.success(_cachedResponse!);
-    } catch (e) {
-      return ApiResult.fail(e.toString());
+    } catch (exception) {
+      return ApiResult.fail(ErrorHandler.handle(exception));
     }
   }
 
