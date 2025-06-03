@@ -33,8 +33,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
         return state.when(
           idle: () => const CircularProgressIndicator(),
           success: (sounds) => _buildSuccessBody(sounds),
-          fail: (errorMessage) => Center(
-            child: Text(errorMessage),
+          fail: (error) => Center(
+            child: Text(error.soundErrorModel.message!),
           ),
         );
       },

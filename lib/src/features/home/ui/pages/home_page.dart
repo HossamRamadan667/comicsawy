@@ -53,8 +53,10 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           },
-          fail: (errorMessage) {
-            return Center(child: Text(errorMessage));
+          fail: (error) {
+            return Center(
+              child: Text(error.soundErrorModel.message!),
+            );
           },
         );
       },
