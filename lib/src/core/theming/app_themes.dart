@@ -1,4 +1,5 @@
 import 'package:comicsawy/src/core/theming/app_colors.dart';
+import 'package:comicsawy/src/core/theming/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class AppThemes {
@@ -14,6 +15,27 @@ class AppThemes {
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.seedColor,
       brightness: Brightness.dark,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.gray,
+          width: 1.3,
+        ),
+      ),
+      enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.darkGray,
+          width: 1.3,
+        ),
+      ),
+      errorBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.redAccent,
+          width: 1.3,
+        ),
+      ),
+      labelStyle: TextStyles.font17LightGrayW400,
     ),
     bottomNavigationBarTheme: _bottomNavigationBarTheme,
     fontFamily: 'khebrat',

@@ -5,6 +5,7 @@ import 'package:comicsawy/src/features/home/logic/cubit/home_page_cubit.dart';
 import 'package:comicsawy/src/features/home/ui/home_screen.dart';
 import 'package:comicsawy/src/features/home/ui/pages/favorites_page.dart';
 import 'package:comicsawy/src/features/home/ui/pages/home_page.dart';
+import 'package:comicsawy/src/features/login/ui/login_screen.dart';
 import 'package:comicsawy/src/features/upload_sound/ui/upload_sound_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,8 @@ class AppRouter {
             ),
           ),
         );
+      case AppRoutes.login:
+        return MaterialPageRoute(builder: (context) => LoginScreen());
       case AppRoutes.uploadSound:
         return MaterialPageRoute(
           builder: (context) => const UploadSoundScreen(),

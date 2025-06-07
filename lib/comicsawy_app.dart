@@ -13,14 +13,15 @@ class ComicsawyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
-      builder: (context, child) => child!,
-      child: MaterialApp(
-        themeMode: ThemeMode.dark,
-        darkTheme: AppThemes.dark,
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: appRouter.generateRoute,
-        initialRoute: AppRoutes.home,
-      ),
+      builder: (context, child) {
+        return MaterialApp(
+          themeMode: ThemeMode.dark,
+          darkTheme: AppThemes.dark,
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: appRouter.generateRoute,
+          initialRoute: AppRoutes.home,
+        );
+      },
     );
   }
 }
