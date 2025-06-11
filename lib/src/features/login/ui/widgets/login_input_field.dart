@@ -8,26 +8,32 @@ class LoginInputField extends StatelessWidget {
   final bool? isObscure;
   final TextInputType? keyboardType;
   final TextEditingController controller;
-  const LoginInputField(
-      {super.key,
-      required this.labelText,
-      required this.prefixIcon,
-      this.suffixIcon,
-      this.isObscure,
-      this.keyboardType,
-      required this.controller});
+  final String? Function(String?)? validator;
+
+  const LoginInputField({
+    super.key,
+    required this.labelText,
+    required this.prefixIcon,
+    this.suffixIcon,
+    this.isObscure,
+    this.keyboardType,
+    required this.controller,
+    this.validator,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        style: TextStyles.font20LightGrayW700,
-        controller: controller,
-        keyboardType: keyboardType ?? TextInputType.text,
-        obscureText: isObscure ?? false,
-        decoration: InputDecoration(
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-          label: Text(labelText),
-        ));
+      style: TextStyles.font20LightGrayW700,
+      controller: controller,
+      keyboardType: keyboardType ?? TextInputType.text,
+      obscureText: isObscure ?? false,
+      decoration: InputDecoration(
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        label: Text(labelText),
+      ),
+      validator: validator,
+    );
   }
 }
