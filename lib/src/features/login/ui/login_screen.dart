@@ -1,5 +1,8 @@
+import 'package:comicsawy/src/core/di/dependency_injection.dart';
 import 'package:comicsawy/src/core/widgets/spacing.dart';
+import 'package:comicsawy/src/features/login/logic/cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'widgets/login_form.dart';
@@ -19,7 +22,8 @@ class LoginScreen extends StatelessWidget {
           children: [
             const LoginTitleWithParagraph(),
             Spacing.verticalSpace(20),
-            const LoginForm(),
+            BlocProvider.value(
+                value: getIt<LoginCubit>(), child: const LoginForm()),
           ],
         ),
       )),
