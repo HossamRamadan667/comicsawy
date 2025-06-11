@@ -1,4 +1,5 @@
 import 'package:comicsawy/src/core/di/dependency_injection.dart';
+import 'package:comicsawy/src/core/helpers/firebase_helpers.dart';
 import 'package:comicsawy/src/core/routing/routes.dart';
 import 'package:comicsawy/src/features/home/logic/cubit/favorite_page_cubit.dart';
 import 'package:comicsawy/src/features/home/logic/cubit/home_page_cubit.dart';
@@ -27,10 +28,15 @@ class AppRouter {
           ),
         );
       case AppRoutes.login:
-        return MaterialPageRoute(builder: (context) => LoginScreen());
+        return MaterialPageRoute(builder: (context) => const LoginScreen());
       case AppRoutes.uploadSound:
         return MaterialPageRoute(
-          builder: (context) => const UploadSoundScreen(),
+          builder: (context) {
+            if (FirebaseHelpers.firebaseAuth.currentUser == null) {
+              return const LoginScreen();
+            }
+            return const UploadSoundScreen();
+          },
         );
       default:
         return MaterialPageRoute(
