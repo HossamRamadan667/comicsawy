@@ -37,6 +37,9 @@ class AppThemes {
       ),
       labelStyle: TextStyles.font17LightGrayW400,
     ),
+    checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStatePropertyAll(AppColors.gray),
+        checkColor: const MaterialStatePropertyAll(AppColors.seedColor)),
     bottomNavigationBarTheme: _bottomNavigationBarTheme,
     fontFamily: 'khebrat',
   );
