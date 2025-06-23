@@ -46,17 +46,10 @@ class SoundsRepo {
 
   /// function that returns ApiResult contains
   ///
-  /// success: {
-  ///
-  ///   "categoryName": [
-  ///
+  /// success: [
   ///     instanceOfSoundModel (with id and is favorite),
-  ///
   ///     instanceOfSoundModel (with id and is favorite),...
-  ///
-  ///   ],...
-  ///
-  /// }
+  ///   ]
   ///
   /// fail : 'error'
   Future<ApiResult<List<SoundModel>>> getFavorites() async {
