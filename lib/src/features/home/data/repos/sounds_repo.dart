@@ -6,6 +6,11 @@ import 'package:comicsawy/src/core/networking/api_result.dart';
 import 'package:comicsawy/src/core/networking/api_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum RefreshType {
+  sortedByCategory,
+  favorites,
+}
+
 class SoundsRepo {
   final ApiServices apiServices;
   final SharedPreferences sharedPreferences;
@@ -13,6 +18,14 @@ class SoundsRepo {
 
   // cause not to make api call every change between pages at homeScreen
   Map<String, SoundModel>? _cachedResponse;
+
+  final List<String> _categories = [];
+  Future<List<String>> getCategories() async {
+    if (_categories.isEmpty) {
+      await _callAllSounds();
+    }
+    return _categories;
+  }
 
   /// function that returns ApiResult contains
   ///
@@ -46,17 +59,10 @@ class SoundsRepo {
 
   /// function that returns ApiResult contains
   ///
-  /// success: {
-  ///
-  ///   "categoryName": [
-  ///
+  /// success: [
   ///     instanceOfSoundModel (with id and is favorite),
-  ///
   ///     instanceOfSoundModel (with id and is favorite),...
-  ///
-  ///   ],...
-  ///
-  /// }
+  ///   ]
   ///
   /// fail : 'error'
   Future<ApiResult<List<SoundModel>>> getFavorites() async {
@@ -116,6 +122,11 @@ class SoundsRepo {
           sound.setId(id);
           // set is favorite to the model
           sound.setIsFavorite(favoritesIdsList.contains(sound.id));
+
+          // set categories
+          if (!_categories.contains(sound.category)) {
+            _categories.add(sound.category);
+          }
         });
         _cachedResponse = response;
       }
@@ -145,5 +156,14 @@ class SoundsRepo {
     });
 
     return sounds;
+  }
+
+  Future<ApiResult> refresh(RefreshType refreshType) async {
+    _cachedResponse == null;
+    if (refreshType == RefreshType.sortedByCategory) {
+      return getSoundsSortedByCategory();
+    } else {
+      return getFavorites();
+    }
   }
 }
