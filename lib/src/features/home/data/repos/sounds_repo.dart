@@ -14,6 +14,14 @@ class SoundsRepo {
   // cause not to make api call every change between pages at homeScreen
   Map<String, SoundModel>? _cachedResponse;
 
+  final List<String> _categories = [];
+  Future<List<String>> getCategories() async {
+    if (_categories.isEmpty) {
+      await _callAllSounds();
+    }
+    return _categories;
+  }
+
   /// function that returns ApiResult contains
   ///
   /// success:  {
@@ -109,6 +117,11 @@ class SoundsRepo {
           sound.setId(id);
           // set is favorite to the model
           sound.setIsFavorite(favoritesIdsList.contains(sound.id));
+
+          // set categories
+          if (!_categories.contains(sound.category)) {
+            _categories.add(sound.category);
+          }
         });
         _cachedResponse = response;
       }
