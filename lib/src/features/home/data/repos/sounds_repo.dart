@@ -6,6 +6,11 @@ import 'package:comicsawy/src/core/networking/api_result.dart';
 import 'package:comicsawy/src/core/networking/api_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum RefreshType {
+  sortedByCategory,
+  favorites,
+}
+
 class SoundsRepo {
   final ApiServices apiServices;
   final SharedPreferences sharedPreferences;
@@ -151,5 +156,14 @@ class SoundsRepo {
     });
 
     return sounds;
+  }
+
+  Future<ApiResult> refresh(RefreshType refreshType) async {
+    _cachedResponse == null;
+    if (refreshType == RefreshType.sortedByCategory) {
+      return getSoundsSortedByCategory();
+    } else {
+      return getFavorites();
+    }
   }
 }
