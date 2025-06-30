@@ -1,7 +1,9 @@
 import 'package:comicsawy/src/core/theming/text_styles.dart';
 import 'package:comicsawy/src/core/widgets/spacing.dart';
+import 'package:comicsawy/src/features/upload_sound/logic/cubit/upload_sound_cubit.dart';
 import 'package:comicsawy/src/features/upload_sound/ui/widgets/upload_sound_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TitleAndCategory extends StatefulWidget {
   const TitleAndCategory({super.key});
@@ -11,13 +13,20 @@ class TitleAndCategory extends StatefulWidget {
 }
 
 class _TitleAndCategoryState extends State<TitleAndCategory> {
-  List<String> dummyCategories = [
-    'a',
-    'b',
-    'c',
-  ];
-  String? selectedItem;
+  List<String> categories = [];
   bool isNewCategory = false;
+
+  @override
+  void initState() {
+    BlocProvider.of<UploadSoundCubit>(context)
+        .getCategories()
+        .then((categoriesResponse) => setState(() {
+              categories = categoriesResponse;
+            }));
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -25,9 +34,12 @@ class _TitleAndCategoryState extends State<TitleAndCategory> {
       children: [
         Expanded(
           child: UploadSoundInput(
-            controller: TextEditingController(),
             labelText: 'Title',
             prefixIcon: const Icon(Icons.title),
+            controller:
+                BlocProvider.of<UploadSoundCubit>(context).titleController,
+            validator:
+                BlocProvider.of<UploadSoundCubit>(context).fieldsValidator,
           ),
         ),
         Spacing.horizontalSpace(10),
@@ -35,10 +47,16 @@ class _TitleAndCategoryState extends State<TitleAndCategory> {
           child: Column(
             children: [
               isNewCategory
+                  // category INPUT
                   ? UploadSoundInput(
                       labelText: 'Category',
-                      prefixIcon: Icon(Icons.category),
-                      controller: TextEditingController())
+                      prefixIcon: const Icon(Icons.category),
+                      controller: BlocProvider.of<UploadSoundCubit>(context)
+                          .categoryController,
+                      validator: BlocProvider.of<UploadSoundCubit>(context)
+                          .fieldsValidator,
+                    )
+                  // category DROP_DOWN
                   : DropdownButtonFormField(
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.category),
@@ -46,12 +64,15 @@ class _TitleAndCategoryState extends State<TitleAndCategory> {
                       ),
                       style: TextStyles.font20LightGrayW700,
                       hint: const Text('Category'),
-                      value: selectedItem,
-                      items: dummyCategories
-                          .map(
-                              (e) => DropdownMenuItem(value: e, child: Text(e)))
+                      value: BlocProvider.of<UploadSoundCubit>(context)
+                          .selectedCategory,
+                      items: categories
+                          .map((category) => DropdownMenuItem(
+                              value: category, child: Text(category)))
                           .toList(),
-                      onChanged: (value) => selectedItem = value,
+                      onChanged: (value) =>
+                          BlocProvider.of<UploadSoundCubit>(context)
+                              .selectedCategory = value,
                     ),
               Spacing.verticalSpace(10),
               Row(
