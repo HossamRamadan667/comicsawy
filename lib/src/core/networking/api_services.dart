@@ -13,7 +13,7 @@ abstract class ApiServices {
   @GET('/sounds.json')
   Future<Map<String, SoundModel>> getAllSound();
 
-  @POST('/test.json')
+  @POST('/sounds.json')
   Future<UploadSoundResponseModel> uploadSound(
     @Body() SoundModel sound,
     @Query('auth') String auth,

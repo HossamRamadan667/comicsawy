@@ -62,7 +62,7 @@ class _ApiServices implements ApiServices {
     )
             .compose(
               _dio.options,
-              '/test.json',
+              '/sounds.json',
               queryParameters: queryParameters,
               data: _data,
             )
