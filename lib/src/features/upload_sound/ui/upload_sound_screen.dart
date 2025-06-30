@@ -1,10 +1,8 @@
-import 'package:comicsawy/src/core/theming/text_styles.dart';
-import 'package:comicsawy/src/core/widgets/spacing.dart';
-import 'package:comicsawy/src/features/upload_sound/ui/widgets/clear_form_button.dart';
-import 'package:comicsawy/src/features/upload_sound/ui/widgets/file_picker.dart';
-import 'package:comicsawy/src/features/upload_sound/ui/widgets/title_and_category.dart';
-import 'package:comicsawy/src/features/upload_sound/ui/widgets/upload_sound_button.dart';
+import 'package:comicsawy/src/core/di/dependency_injection.dart';
+import 'package:comicsawy/src/features/upload_sound/logic/cubit/upload_sound_cubit.dart';
+import 'package:comicsawy/src/features/upload_sound/ui/widgets/upload_sound_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UploadSoundScreen extends StatelessWidget {
@@ -19,26 +17,9 @@ class UploadSoundScreen extends StatelessWidget {
           horizontal: 10.w,
           vertical: 20.h,
         ),
-        child: Form(
-          child: Column(
-            children: [
-              const TitleAndCategory(),
-              Spacing.verticalSpace(10),
-              FilePicker(),
-              Spacing.verticalSpace(10),
-              Row(
-                children: [
-                  const Expanded(
-                    child: UploadButton(),
-                  ),
-                  Spacing.horizontalSpace(10),
-                  const Expanded(
-                    child: ClearFormButton(),
-                  )
-                ],
-              ),
-            ],
-          ),
+        child: BlocProvider.value(
+          value: getIt<UploadSoundCubit>(),
+          child: const UploadSoundForm(),
         ),
       )),
     );
