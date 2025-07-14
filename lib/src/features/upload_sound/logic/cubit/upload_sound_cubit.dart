@@ -71,7 +71,7 @@ class UploadSoundCubit extends Cubit<UploadSoundState> {
     ApiResult<UploadSoundResponseModel> uploadSoundResponse =
         await uploadSoundRepo.uploadSound(
       name: titleController.text,
-      category: categoryController.text,
+      category: selectedCategory ?? categoryController.text,
       soundFile: _pickedFile!,
     );
 

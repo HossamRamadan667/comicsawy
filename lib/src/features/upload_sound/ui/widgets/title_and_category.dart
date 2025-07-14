@@ -82,6 +82,9 @@ class _TitleAndCategoryState extends State<TitleAndCategory> {
                     value: isNewCategory,
                     onChanged: (value) => setState(() {
                       isNewCategory = !isNewCategory;
+                      //   Clear selectedCategory to prevent using it when we add a new category
+                      BlocProvider.of<UploadSoundCubit>(context)
+                          .selectedCategory = null;
                     }),
                   ),
                   Text('New Category', style: TextStyles.font17Gray),
