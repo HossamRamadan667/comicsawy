@@ -1,4 +1,4 @@
-package com.example.comicsawy
+package com.hr.comicsawy
 
 import io.flutter.embedding.android.FlutterActivity
 
